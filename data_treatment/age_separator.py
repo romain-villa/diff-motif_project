@@ -2,7 +2,7 @@ import sys
 import os
 
 def create(prefix,lines):
-    with open(prefix[:-6]+'_'+which(lines),'a') as ipt:
+    with open(prefix[:-6]+'_'+which(lines)+".fasta",'a') as ipt:
         for i in range(len(lines)) :
             ipt.write(lines[i])
 
