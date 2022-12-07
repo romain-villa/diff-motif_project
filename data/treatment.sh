@@ -21,6 +21,29 @@ order(){
 	mv !("$filename"|!(*".fasta")) data_by_age/
 }
 
+sampling(){
+	i=$1
+	spl=$2
+	for file in $PWD/data_by_age/*
+	do
+		python3 sampling.py $file $spl
+	done
+	mv data_by_age/*"sampled.fasta" data_by_age_sampled/batch_${i}
+}
+
+verif_dir(){
+	if [ ! -d "$PWD/data_by_age" ]; then
+	echo "Error : data is not ordered by age"
+	exit
+	fi
+	if [ -d "$PWD/data_by_age_sampled" ]; then
+	rm -r data_by_age_sampled
+	mkdir data_by_age_sampled
+	else
+	mkdir data_by_age_sampled
+	fi
+}
+
 
 PS3='Choose the desired mode : '
 mode=("Ordering by age" "Sampling data" "Quit")
@@ -31,11 +54,16 @@ select mde in "${mode[@]}"; do
 			break
             ;;
         "Sampling data")
-			if [ ! -d "$PWD/data_by_age" ]; then
-			echo "Error : data is not ordered by age"
-			exit
-			fi	
-            ## sampling
+			verif_dir
+			echo "How many batches?"
+			read nb_i
+			echo "How many sample?"
+			read spl
+			for ((i=0; i<nb_i; i++))
+			do
+  				mkdir data_by_age_sampled/batch_${i}
+				sampling $i $spl
+			done
 			break
             ;;
 		"Quit")
