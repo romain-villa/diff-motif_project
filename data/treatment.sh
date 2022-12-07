@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-#echo "Make sure the program age_separator.py is in the WD."
+#echo "Make sure the program age_separator.py is in the WD.blblblblblbl"
 
-shopt -s extglob
+shopt -s eglob
 
 # ordering data by age 
 order(){
