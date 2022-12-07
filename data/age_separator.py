@@ -36,7 +36,7 @@ def main():
                 cpt=cpt+1
                 create(args[0],lines)
                 lines = []
-                if cpt%10000 == 0:
+                if cpt%100000 == 0:
                     print(str(cpt)+" treated sequences.")
             if line == '' :
                 lines.append('\n')
