@@ -26,7 +26,7 @@ sampling(){
 	spl=$2
 	for file in $PWD/data_by_age/*
 	do
-		python3 sampling.py $file $spl $i
+		python3 src/sampling.py $file $spl $i
 	done
 	mv data_by_age/*"sampled_${i}.fasta" data_by_age_sampled/batch_${i}
 }
