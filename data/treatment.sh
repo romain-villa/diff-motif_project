@@ -17,7 +17,7 @@ order(){
 	echo "Name of the fasta file (raw data) :"
 	read filename
 	echo "Ordering data..."
-	python3 age_separator.py $filename
+	python3 src/age_separator.py $filename
 	mv !("$filename"|!(*".fasta")) data_by_age/
 }
 
