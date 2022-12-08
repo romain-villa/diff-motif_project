@@ -26,9 +26,9 @@ sampling(){
 	spl=$2
 	for file in $PWD/data_by_age/*
 	do
-		python3 sampling.py $file $spl
+		python3 sampling.py $file $spl $i
 	done
-	mv data_by_age/*"sampled.fasta" data_by_age_sampled/batch_${i}
+	mv data_by_age/*"sampled_${i}.fasta" data_by_age_sampled/batch_${i}
 }
 
 verif_dir(){
@@ -55,11 +55,11 @@ select mde in "${mode[@]}"; do
             ;;
         "Sampling data")
 			verif_dir
-			echo "How many batches?"
+			echo "Number of different samples?"
 			read nb_i
-			echo "How many sample?"
+			echo "Sequences per sample?"
 			read spl
-			for ((i=0; i<nb_i; i++))
+			for ((i=1; i<=nb_i; i++))
 			do
   				mkdir data_by_age_sampled/batch_${i}
 				sampling $i $spl

@@ -5,7 +5,10 @@ import sys
 
 args=sys.argv[1:]
 
-file = open(args[0][:-6]+"_sampled.fasta", "w") 
+if("trash" in args[0]):
+	exit()
+
+file = open(args[0][:-6]+"_sampled_"+str(args[2])+".fasta", "w") 
 
 with open(args[0]) as f:
 	seqs = SeqIO.parse(f, "fasta")
