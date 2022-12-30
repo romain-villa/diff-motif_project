@@ -1,4 +1,4 @@
-# Abondance des motifs de fixation des TFs selon l'ancienneté des CNEs.
+# Enrichissement des motifs de fixation des TFs selon l'ancienneté des CNEs.
 Authors : **[Romain Villa](mailto:rvilla@edu.bio.ens.psl.eu) | [Robin Weissmann-Farbos](mailto:weissman@edu.bio.ens.psl.eu)**
 
 _Sujet proposé par :_
