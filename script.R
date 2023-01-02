@@ -1,11 +1,11 @@
-## Chargement des données : 
+# Chargement des données : 
 
 spgi <- read.table("CNEs_spgi", sep="\t", encoding="UTF-8", col.names=c("seq_id","ft_type","ft_name","strand","start","end", "sequence","weight", "Pval", "ln_Pval","sig"))
 euth <- read.table("CNEs_euth", sep="\t", encoding="UTF-8", col.names=c("seq_id","ft_type","ft_name","strand","start","end", "sequence","weight", "Pval", "ln_Pval","sig"))
 spgi_shuffled <- read.table("CNEs_spgi_shuffled.txt", sep="\t", encoding="UTF-8", col.names=c("seq_id","ft_type","ft_name","strand","start","end", "sequence","weight", "Pval", "ln_Pval","sig"))
 euth_shuffled <- read.table("CNEs_euth_shuffled.txt", sep="\t", encoding="UTF-8", col.names=c("seq_id","ft_type","ft_name","strand","start","end", "sequence","weight", "Pval", "ln_Pval","sig"))
 
-## Fonction bootstrap : 
+# Fonction bootstrap : 
 
 bootIC <- function(x, B, alpha, name){
   
@@ -20,7 +20,6 @@ bootIC <- function(x, B, alpha, name){
     tab <- as.data.frame(table(newobs))
     a <- paste("boot", name, sep = "_")
     assign(paste(a, i, sep = "_"), tab, .GlobalEnv)
-    #n < append(n, paste(a, i, sep = "_"))
     }
   
   for (i in m){
@@ -58,10 +57,7 @@ bootIC(euth$ft_name, 100, 0.95, name="euth")
 bootIC(spgi_shuffled$ft_name, 100, 0.95, name="spgi_shuffled")
 bootIC(euth_shuffled$ft_name, 100, 0.95, name="euth_shuffled")
 
-
-# Création d'un tableau de comparaison des données : 
-
-#Create a list with all the matrix name:
+# Create a list with all the matrix name:
 l <- unique(spgi$ft_name)
 l <- append(l, unique(euth$ft_name))
 l <- append(l, unique(spgi_shuffled$ft_name))
@@ -88,7 +84,7 @@ for(y in names){
   }
 }
 
-# Creating ratios :
+# Computing ratios :
 
 for(i in df$matrix){
   u = df$euth_mean[df$matrix==i]/df$euth_shuffled_mean[df$matrix==i]
@@ -134,7 +130,7 @@ for(i in df$matrix){
   }
 }     
     
-#On retire les matrices qui ne sont pas enrichis par comparaison au contrôle (shuffled) pour chacun des jeux de données :
+# On élimine les matrices qui ne sont pas enrichis par comparaison au contrôle (shuffled) pour chacun des jeux de données :
 df_1 <- subset(df, !(df$euth_sXeuth=="Yes" & df$spgi_sXspgi=="Yes"))
 dim(df)
 dim(df_1)
@@ -157,7 +153,7 @@ family <- data.frame("matrix" = family$Spz1, "family" = family$X )
 
 df_1$family <- NA
 
-# adding family data 
+# Adding family data 
 for (i in family$matrix){
   df_1$family[df_1$matrix==i] <- family$family[family$matrix==i]
 }
@@ -175,7 +171,7 @@ top_10_families <- sqldf("SELECT family FROM ratio_fam GROUP BY family ORDER BY 
 ratio_fam$family <- fct_collapse(ratio_fam$family, Other = setdiff(levels(ratio_fam$family), top_10_families$family))
 ratio_fam <- na.omit(ratio_fam)
 
-# histogram distribution by families
+# Distribution histogram by families
 ggplot(ratio_fam, aes(x = ratio_final, fill=family)) +
   geom_histogram(bins = 20) +
   scale_fill_discrete(name = "TFs families", limits = top_10_families$family) +
@@ -183,15 +179,14 @@ ggplot(ratio_fam, aes(x = ratio_final, fill=family)) +
   labs(x = "+ Sarcopterygii - RATIO - Eutheria +", y= "Distribution") +
   theme(legend.position="none")
 
-# boxplot families ratio
+# Boxplot ratio / families
 ggplot(ratio_fam, aes(x = family, y = ratio_final, fill = family)) +
   geom_boxplot() + geom_hline(yintercept = c(1), linetype = "dashed") +
   labs(y = "+ Sarcopterygii - RATIO - Eutheria +", x= "TFs families") +
   theme(axis.text.x = element_text(angle = 55, size = 7, hjust = 1)) +
   theme(legend.position = "none", legend.title = element_blank())
 
-
-# Plot density curve + histogram colored by families
+# Plot density curve + distribution histogram colored by families
 ggplot(ratio_fam, aes(x = ratio_final, fill = family)) +
   geom_histogram(bins = 20) + 
   scale_fill_discrete(name = "TFs families", limits = top_10_families$family) +
